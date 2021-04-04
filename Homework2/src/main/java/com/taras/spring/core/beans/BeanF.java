@@ -2,14 +2,21 @@ package com.taras.spring.core.beans;
 
 import org.springframework.stereotype.Component;
 
-@Component
 public class BeanF {
     private String name;
-    private String value;
+    private int value;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 
     @Override
     public String toString() {
-        return "BeanA{" +
+        return "BeanF{" +
                 "name='" + name + '\'' +
                 ", value='" + value + '\'' +
                 '}';
