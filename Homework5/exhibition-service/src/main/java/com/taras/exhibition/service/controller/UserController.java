@@ -1,5 +1,7 @@
 package com.taras.exhibition.service.controller;
 
+import com.taras.exhibition.service.controller.assembler.UserAssembler;
+import com.taras.exhibition.service.controller.model.UserModel;
 import com.taras.exhibition.service.dto.UserDto;
 import com.taras.exhibition.service.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,33 +14,35 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final UserAssembler userAssembler;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{email}")
-    public UserDto getUser(@PathVariable String email) {
-
-        log.info("Get user with email "+ email);
-        return userService.getUser(email);
+    public UserModel getUser(@PathVariable String email) {
+        UserDto user = userService.getUser(email);
+        log.info("Get user with email " + email);
+        return userAssembler.toModel(user);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+    public UserModel createUser(@Valid @RequestBody UserDto userDto) {
+        UserDto user = userService.createUser(userDto);
         log.info("Create user:{} ", userDto);
-        return userService.createUser(userDto);
+        return userAssembler.toModel(user);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{email}")
-    public UserDto updateUser(@PathVariable String email, @RequestBody UserDto userDto) {
-
+    public UserModel updateUser(@PathVariable String email, @RequestBody UserDto userDto) {
+        UserDto user = userService.updateUser(email, userDto);
         log.info("Update user:{} with email " + email, userDto);
-        return userService.updateUser(email, userDto);
+        return userAssembler.toModel(user);
     }
 
     @RequestMapping(value = "/{email}", method = RequestMethod.DELETE)
