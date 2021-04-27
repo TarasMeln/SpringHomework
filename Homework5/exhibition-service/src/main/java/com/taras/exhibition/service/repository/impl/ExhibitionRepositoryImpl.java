@@ -1,5 +1,6 @@
 package com.taras.exhibition.service.repository.impl;
 
+import com.taras.exhibition.service.exception.ExhibitionNotFoundException;
 import com.taras.exhibition.service.model.Exhibition;
 import com.taras.exhibition.service.repository.ExhibitionRepository;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ public class ExhibitionRepositoryImpl implements ExhibitionRepository {
 
     @Override
     public Exhibition getExhibition(String theme) {
-        return list.stream().filter(exhibition -> exhibition.getTheme().equals(theme)).findFirst().orElseThrow(RuntimeException::new);
+        return list.stream().filter(exhibition -> exhibition.getTheme().equals(theme)).findFirst().orElseThrow(ExhibitionNotFoundException::new);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class ExhibitionRepositoryImpl implements ExhibitionRepository {
         if (isDeleted) {
             list.add(exhibition);
         } else {
-            throw new RuntimeException("Exhibition does not exist!");
+            throw new ExhibitionNotFoundException();
         }
         return exhibition;
     }

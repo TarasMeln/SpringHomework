@@ -29,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (isDeleted) {
             list.add(user);
         } else {
-            throw new RuntimeException("User does not exist!");
+            throw new UserNotFoundException();
         }
         return user;
     }
